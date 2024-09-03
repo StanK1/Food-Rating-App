@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/product.dart';
 import '../services/scan_history_service.dart';
+import 'product_detail_screen.dart';
 import '../widgets/product_card.dart';
 
 class ScanHistoryScreen extends StatefulWidget {
@@ -36,9 +37,22 @@ class _ScanHistoryScreenState extends State<ScanHistoryScreen> {
           } else {
             final products = snapshot.data!;
             return ListView.builder(
+              padding: const EdgeInsets.all(8.0),
               itemCount: products.length,
               itemBuilder: (context, index) {
-                return ProductCard(product: products[index]);
+                final product = products[index];
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            ProductDetailScreen(product: product),
+                      ),
+                    );
+                  },
+                  child: ProductCard(product: product),
+                );
               },
             );
           }

@@ -3,8 +3,7 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import '../models/product.dart';
 import '../services/product_service.dart';
 import '../services/scan_history_service.dart';
-import '../widgets/product_card.dart';
-import 'scan_history_screen.dart';
+import 'product_detail_screen.dart';
 
 class ScanScreen extends StatefulWidget {
   @override
@@ -35,19 +34,74 @@ class _ScanScreenState extends State<ScanScreen> {
 
         if (product != null) {
           await _scanHistoryService.addProduct(product);
-        }
 
-        setState(() {
-          _scannedProduct = product;
-          _isLoading = false;
-        });
+          setState(() {
+            _scannedProduct = product;
+            _isLoading = false;
+          });
+
+          // Show the product details in a bottom sheet
+          _showProductBottomSheet(product);
+        } else {
+          setState(() {
+            _isLoading = false;
+          });
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text("Product not found!")));
+        }
       }
     } catch (e) {
       setState(() {
         _isLoading = false;
       });
-      // Handle error
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Error occurred while scanning.")));
     }
+  }
+
+  void _showProductBottomSheet(Product product) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (context) {
+        return Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(16.0),
+              topRight: Radius.circular(16.0),
+            ),
+          ),
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(product.name,
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              Text('Brand: ${product.brand}',
+                  style: TextStyle(fontSize: 16, color: Colors.grey)),
+              SizedBox(height: 10),
+              Text('Rating: ⭐⭐⭐⭐', style: TextStyle(fontSize: 16)),
+              SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context); // Close the bottom sheet
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            ProductDetailScreen(product: product)),
+                  );
+                },
+                child: Text('Show Product Details'),
+              )
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -55,31 +109,19 @@ class _ScanScreenState extends State<ScanScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Scan a Chocolate'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.history),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ScanHistoryScreen()),
-              );
-            },
-          ),
-        ],
       ),
-      body: _isLoading
-          ? Center(child: CircularProgressIndicator())
-          : _scannedProduct == null
-              ? Center(
-                  child: ElevatedButton(
+      body: Stack(
+        children: [
+          Center(
+            child: _isLoading
+                ? CircularProgressIndicator()
+                : ElevatedButton(
                     onPressed: _scanBarcode,
                     child: Text('Start Scanning'),
                   ),
-                )
-              : Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: ProductCard(product: _scannedProduct!),
-                ),
+          ),
+        ],
+      ),
     );
   }
 }

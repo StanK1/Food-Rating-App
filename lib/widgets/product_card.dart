@@ -18,7 +18,6 @@ class ProductCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Product Image
             Image.network(
               product.imageUrl,
               height: 150,
@@ -36,7 +35,6 @@ class ProductCard extends StatelessWidget {
               },
             ),
             const SizedBox(height: 10),
-            // Product Name
             Text(
               product.name,
               style: const TextStyle(
@@ -45,7 +43,6 @@ class ProductCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 5),
-            // Product Brand
             Text(
               'Brand: ${product.brand}',
               style: const TextStyle(
@@ -54,37 +51,6 @@ class ProductCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
-            // Nutri-Score
-            if (product.nutriScore != 'unknown')
-              Text(
-                'Nutri-Score: ${product.nutriScore.toUpperCase()}',
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.green,
-                ),
-              ),
-            const SizedBox(height: 10),
-            // Nutritional Information
-            if (product.nutriments.isNotEmpty)
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Nutritional Information:',
-                      style: const TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 5),
-                  Text(
-                      'Energy: ${product.nutriments['energy-kcal_100g'] ?? 'N/A'} kcal per 100g'),
-                  Text(
-                      'Fat: ${product.nutriments['fat_100g'] ?? 'N/A'} g per 100g'),
-                  Text(
-                      'Sugars: ${product.nutriments['sugars_100g'] ?? 'N/A'} g per 100g'),
-                  // Add more nutritional info as needed
-                ],
-              ),
-            const SizedBox(height: 10),
-            // Product Rating (Placeholder)
             Row(
               children: List.generate(5, (index) {
                 return Icon(

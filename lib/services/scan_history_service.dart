@@ -11,7 +11,6 @@ class ScanHistoryService {
     final List<String> productList =
         prefs.getStringList(_scannedProductsKey) ?? [];
 
-    // Convert product to JSON and save it to the list
     productList.add(jsonEncode(product.toJson()));
     await prefs.setStringList(_scannedProductsKey, productList);
   }
@@ -22,13 +21,13 @@ class ScanHistoryService {
     final List<String> productList =
         prefs.getStringList(_scannedProductsKey) ?? [];
 
-    // Convert JSON to Product list
-    return productList
-        .map((item) => Product.fromJson(jsonDecode(item)))
-        .toList();
+    List<Product> products = productList.map((item) {
+      return Product.fromJson(jsonDecode(item));
+    }).toList();
+
+    return products;
   }
 
-  // Clear all scanned products
   Future<void> clearScannedProducts() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(_scannedProductsKey);

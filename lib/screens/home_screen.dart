@@ -7,32 +7,30 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chocolate Rater'),
+        title: Text('Chocolate Rating App'),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton.icon(
-              icon: Icon(Icons.camera_alt),
-              label: Text('Scan Chocolate'),
+          children: <Widget>[
+            ElevatedButton(
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => ScanScreen()),
                 );
               },
+              child: Text('Scan a Chocolate'),
             ),
             SizedBox(height: 20),
-            ElevatedButton.icon(
-              icon: Icon(Icons.history),
-              label: Text('View Scan History'),
+            ElevatedButton(
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => ScanHistoryScreen()),
                 );
               },
+              child: Text('View Scanned Chocolates'),
             ),
           ],
         ),

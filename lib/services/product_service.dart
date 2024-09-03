@@ -10,7 +10,6 @@ class ProductService {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        // print('API Response: ${response.body}'); // Debugging line
         if (data['status'] == 1) {
           final productData = data['product'];
           return Product(
@@ -18,7 +17,7 @@ class ProductService {
             brand: productData['brands']?.split(',').first ?? 'Unknown',
             imageUrl:
                 productData['image_url'] ?? 'https://via.placeholder.com/150',
-            rating: 0.0, // Default rating as the API doesn't provide this
+            rating: 0.0,
             nutriScore: productData['nutriscore_grade'] ?? 'unknown',
             nutriments: productData['nutriments'] ?? {},
           );
