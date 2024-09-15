@@ -5,6 +5,8 @@ import 'product_detail_screen.dart';
 import '../widgets/product_card.dart';
 
 class ScanHistoryScreen extends StatefulWidget {
+  const ScanHistoryScreen({super.key});
+
   @override
   _ScanHistoryScreenState createState() => _ScanHistoryScreenState();
 }
@@ -23,17 +25,17 @@ class _ScanHistoryScreenState extends State<ScanHistoryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Scanned Chocolates'),
+        title: const Text('Scanned Chocolates'),
       ),
       body: FutureBuilder<List<Product>>(
         future: _scannedProductsFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(child: Text('Error loading scanned products'));
+            return const Center(child: Text('Error loading scanned products'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('No products scanned yet.'));
+            return const Center(child: Text('No products scanned yet.'));
           } else {
             final products = snapshot.data!;
             return ListView.builder(

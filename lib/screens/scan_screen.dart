@@ -6,12 +6,13 @@ import '../services/scan_history_service.dart';
 import 'product_detail_screen.dart';
 
 class ScanScreen extends StatefulWidget {
+  const ScanScreen({super.key});
+
   @override
   _ScanScreenState createState() => _ScanScreenState();
 }
 
 class _ScanScreenState extends State<ScanScreen> {
-  Product? _scannedProduct;
   bool _isLoading = false;
   final ScanHistoryService _scanHistoryService = ScanHistoryService();
 
@@ -36,7 +37,6 @@ class _ScanScreenState extends State<ScanScreen> {
           await _scanHistoryService.addProduct(product);
 
           setState(() {
-            _scannedProduct = product;
             _isLoading = false;
           });
 
@@ -47,7 +47,7 @@ class _ScanScreenState extends State<ScanScreen> {
             _isLoading = false;
           });
           ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text("Product not found!")));
+              .showSnackBar(const SnackBar(content: Text("Product not found!")));
         }
       }
     } catch (e) {
@@ -55,7 +55,7 @@ class _ScanScreenState extends State<ScanScreen> {
         _isLoading = false;
       });
       ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Error occurred while scanning.")));
+          const SnackBar(content: Text("Error occurred while scanning.")));
     }
   }
 
@@ -66,25 +66,25 @@ class _ScanScreenState extends State<ScanScreen> {
       isScrollControlled: true,
       builder: (context) {
         return Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(16.0),
               topRight: Radius.circular(16.0),
             ),
           ),
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(product.name,
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               Text('Brand: ${product.brand}',
-                  style: TextStyle(fontSize: 16, color: Colors.grey)),
-              SizedBox(height: 10),
-              Text('Rating: ⭐⭐⭐⭐', style: TextStyle(fontSize: 16)),
-              SizedBox(height: 10),
+                  style: const TextStyle(fontSize: 16, color: Colors.grey)),
+              const SizedBox(height: 10),
+              const Text('Rating: ⭐⭐⭐⭐', style: TextStyle(fontSize: 16)),
+              const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: () {
                   Navigator.pop(context); // Close the bottom sheet
@@ -95,7 +95,7 @@ class _ScanScreenState extends State<ScanScreen> {
                             ProductDetailScreen(product: product)),
                   );
                 },
-                child: Text('Show Product Details'),
+                child: const Text('Show Product Details'),
               )
             ],
           ),
@@ -108,16 +108,16 @@ class _ScanScreenState extends State<ScanScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Scan a Chocolate'),
+        title: const Text('Scan a Chocolate'),
       ),
       body: Stack(
         children: [
           Center(
             child: _isLoading
-                ? CircularProgressIndicator()
+                ? const CircularProgressIndicator()
                 : ElevatedButton(
                     onPressed: _scanBarcode,
-                    child: Text('Start Scanning'),
+                    child: const Text('Start Scanning'),
                   ),
           ),
         ],

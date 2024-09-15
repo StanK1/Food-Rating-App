@@ -3,11 +3,13 @@ import 'scan_screen.dart';
 import 'scan_history_screen.dart';
 
 class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chocolate Rating App'),
+        title: const Text('Chocolate Rating App'),
       ),
       body: Center(
         child: Column(
@@ -20,9 +22,9 @@ class HomeScreen extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => ScanScreen()),
                 );
               },
-              child: Text('Scan a Chocolate'),
+              child: const Text('Scan a Chocolate'),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -30,7 +32,7 @@ class HomeScreen extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => ScanHistoryScreen()),
                 );
               },
-              child: Text('View Scanned Chocolates'),
+              child: const Text('View Scanned Chocolates'),
             ),
           ],
         ),
