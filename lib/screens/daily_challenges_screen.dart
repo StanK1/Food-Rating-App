@@ -18,7 +18,7 @@ class DailyChallengesScreen extends StatelessWidget {
                 const SizedBox(height: 28),
                 _buildHeaderImage(),
                 const SizedBox(height: 18),
-                _buildTimeInfo(),
+                //_buildTimeInfo(),
                 const SizedBox(height: 24),
                 _buildChallengeInfo(),
                 const SizedBox(height: 28),
@@ -62,7 +62,7 @@ class DailyChallengesScreen extends StatelessWidget {
         image: const DecorationImage(
           image: AssetImage('assets/images/daily_challenges_astronaut.png'),
           fit: BoxFit.cover,
-          alignment: Alignment(0, -0.5), // Updated this line
+          alignment: Alignment(0, -0.35),
         ),
       ),
       child: Stack(
@@ -131,7 +131,7 @@ class DailyChallengesScreen extends StatelessWidget {
             color: const Color(0xFFB9EAFD),
             borderRadius: BorderRadius.circular(5),
           ),
-          child: Icon(icon, color: const Color(0xFF191D1A), size: 24),
+          child: Icon(icon, color: const Color(0xFF191D1A), size: 36),
         ),
         const SizedBox(width: 8),
         Column(
@@ -178,17 +178,17 @@ class DailyChallengesScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildTimeInfo() {
-    return Text(
-      'Next challenge in: 2h 30m',
-      style: TextStyle(
-        color: Colors.white,
-        fontSize: 16,
-        fontWeight: FontWeight.w500,
-        fontFamily: 'Poppins',
-      ),
-    );
-  }
+  //Widget _buildTimeInfo() {
+    //return Text(
+      //'Next challenge in: 2h 30m',
+    //  style: TextStyle(
+    //    color: Colors.white,
+    //    fontSize: 16,
+    //    fontWeight: FontWeight.w500,
+    //    fontFamily: 'Poppins',
+    //  ),
+    //);
+  //}
 
   Widget _buildTaskList() {
     final tasks = [
@@ -240,14 +240,13 @@ class DailyChallengesScreen extends StatelessWidget {
             width: 58,
             height: 58,
             margin: const EdgeInsets.only(left: 8),
-            decoration: BoxDecoration(
-              color: const Color(0xFF192126),
-              borderRadius: BorderRadius.circular(13),
-            ),
-            child: const Icon(
-              Icons.rocket_launch,
-              color: Color(0xFF64B5F6),
-              size: 30,
+            //decoration: BoxDecoration(
+            //  color: const Color(0xFF192126),
+            //  borderRadius: BorderRadius.circular(13),
+            //),
+            child: Image.asset(
+              'assets/images/daily_screen_rocket_luncher.png',
+              fit: BoxFit.contain
             ),
           ),
           const SizedBox(width: 8),
