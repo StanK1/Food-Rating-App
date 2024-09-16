@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'scan_screen.dart';
 import 'scan_history_screen.dart';
+import 'daily_challenges_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -19,7 +20,7 @@ class HomeScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ScanScreen()),
+                  MaterialPageRoute(builder: (context) => const ScanScreen()),
                 );
               },
               child: const Text('Scan a Chocolate'),
@@ -29,10 +30,20 @@ class HomeScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ScanHistoryScreen()),
+                  MaterialPageRoute(builder: (context) => const ScanHistoryScreen()),
                 );
               },
               child: const Text('View Scanned Chocolates'),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const DailyChallengesScreen()),
+                );
+              },
+              child: const Text('Daily Challenges'),
             ),
           ],
         ),
