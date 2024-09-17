@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class DailyChallengesScreen extends StatelessWidget {
-  const DailyChallengesScreen({Key? key}) : super(key: key);
+  const DailyChallengesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -34,12 +34,12 @@ class DailyChallengesScreen extends StatelessWidget {
   }
 
   Widget _buildNavigation() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 20),
+    return const Padding(
+      padding: EdgeInsets.only(top: 20),
       child: Row(
         children: [
-          const Icon(Icons.arrow_back, color: Colors.white),
-          const SizedBox(width: 16),
+          Icon(Icons.arrow_back, color: Colors.white),
+          SizedBox(width: 16),
           Text(
             'Daily Challenge',
             style: TextStyle(
@@ -112,7 +112,7 @@ class DailyChallengesScreen extends StatelessWidget {
                     height: 38,
                     color: Colors.white.withOpacity(0.25),
                   ),
-                  _buildInfoItem(Icons.check_circle_outline, 'Done', '15 tasks'),
+                  _buildInfoItem(Icons.whatshot, 'Done', '15 tasks'),
                 ],
               ),
             ),
@@ -131,7 +131,7 @@ class DailyChallengesScreen extends StatelessWidget {
             color: const Color(0xFFB9EAFD),
             borderRadius: BorderRadius.circular(5),
           ),
-          child: Icon(icon, color: const Color(0xFF191D1A), size: 36),
+          child: Icon(icon, color: const Color(0xFF191D1A), size: 32),
         ),
         const SizedBox(width: 8),
         Column(
@@ -140,11 +140,11 @@ class DailyChallengesScreen extends StatelessWidget {
           children: [
             Text(
               title,
-              style: TextStyle(color: Colors.white, fontSize: 10, fontFamily: 'Poppins'),
+              style: const TextStyle(color: Colors.white, fontSize: 10, fontFamily: 'Poppins'),
             ),
             Text(
               value,
-              style: TextStyle(color: Color(0xFF44CBFF), fontSize: 12, fontWeight: FontWeight.w500, fontFamily: 'Poppins'),
+              style: const TextStyle(color: Color(0xFF44CBFF), fontSize: 12, fontWeight: FontWeight.w500, fontFamily: 'Poppins'),
             ),
           ],
         ),
@@ -156,7 +156,7 @@ class DailyChallengesScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+        const Text(
           'Daily Challenges',
           style: TextStyle(
             color: Colors.white,
@@ -202,7 +202,7 @@ class DailyChallengesScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
+        const Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
@@ -257,7 +257,7 @@ class DailyChallengesScreen extends StatelessWidget {
               children: [
                 Text(
                   task,
-                  style: TextStyle(color: const Color(0xFFC8C1BB), fontSize: 13.5, fontWeight: FontWeight.w600, fontFamily: 'Inter'),
+                  style: const TextStyle(color: Color(0xFFC8C1BB), fontSize: 13.5, fontWeight: FontWeight.w600, fontFamily: 'Inter'),
                 ),
                 const SizedBox(height: 4),
                 Text(
@@ -290,11 +290,11 @@ class DailyChallengesScreen extends StatelessWidget {
         color: const Color(0xFFB9EAFD),
         borderRadius: BorderRadius.circular(32),
       ),
-      child: Center(
+      child: const Center(
         child: Text(
           'Let\'s Begin',
           style: TextStyle(
-            color: const Color(0xFF192126),
+            color: Color(0xFF192126),
             fontSize: 16,
             fontWeight: FontWeight.w600,
             fontFamily: 'Poppins',
