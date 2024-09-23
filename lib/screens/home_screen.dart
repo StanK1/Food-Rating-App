@@ -71,8 +71,8 @@ class HomeScreen extends StatelessWidget {
             ),
           );
         },
-        child: const Icon(Icons.search),
         backgroundColor: Colors.blue,
+        child: const Icon(Icons.search),
       ),
     );
   }

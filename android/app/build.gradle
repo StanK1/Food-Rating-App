@@ -5,6 +5,8 @@ plugins {
     id "dev.flutter.flutter-gradle-plugin"
 }
 
+ext.kotlin_version = "1.6.21" // Define the Kotlin version here
+
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file("local.properties")
 if (localPropertiesFile.exists()) {
@@ -55,4 +57,9 @@ android {
 
 flutter {
     source = "../.."
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version" // Use the defined Kotlin version
+    // ... other dependencies ...
 }

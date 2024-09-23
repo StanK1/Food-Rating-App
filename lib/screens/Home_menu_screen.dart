@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
 class HomeMenuScreen extends StatefulWidget {
-  const HomeMenuScreen({Key? key}) : super(key: key);
+  const HomeMenuScreen({super.key});
 
   @override
   _HomeMenuScreenState createState() => _HomeMenuScreenState();
@@ -36,7 +36,7 @@ class _HomeMenuScreenState extends State<HomeMenuScreen> with TickerProviderStat
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -50,11 +50,11 @@ class _HomeMenuScreenState extends State<HomeMenuScreen> with TickerProviderStat
         child: SafeArea(
           child: Stack(
             children: [
-              Column(
+              const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                     child: Text(
                       'CHOCONAVT',
                       style: TextStyle(
@@ -66,7 +66,7 @@ class _HomeMenuScreenState extends State<HomeMenuScreen> with TickerProviderStat
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 20),
+                    padding: EdgeInsets.only(left: 20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -111,7 +111,7 @@ class _HomeMenuScreenState extends State<HomeMenuScreen> with TickerProviderStat
                           );
                         },
                         child: CustomPaint(
-                          size: Size(472, 472),
+                          size: const Size(472, 472),
                           painter: DashedCirclePainter(),
                         ),
                       ),
@@ -121,8 +121,8 @@ class _HomeMenuScreenState extends State<HomeMenuScreen> with TickerProviderStat
                           return Transform.rotate(
                             angle: _rocketController.value * 2 * math.pi,
                             child: Transform.translate(
-                              offset: Offset(0, -220),
-                              child: Icon(
+                              offset: const Offset(0, -220),
+                              child: const Icon(
                                 Icons.rocket_launch,
                                 color: Colors.white,
                                 size: 24,
@@ -131,11 +131,11 @@ class _HomeMenuScreenState extends State<HomeMenuScreen> with TickerProviderStat
                           );
                         },
                       ),
-                      AnimatedCircle(index: 0, color: Color(0xFF192126), size: 100, top: 0, left: 186),
-                      AnimatedCircle(index: 1, color: Color(0xFF192126), size: 75, top: 50, right: 0),
-                      AnimatedCircle(index: 2, color: Color(0xFF192126), size: 115, bottom: 50, left: 0),
-                      AnimatedCircle(index: 3, color: Color(0xFF192126), size: 75, bottom: 0, right: 75),
-                      AnimatedCircle(index: 4, color: Color(0xFF192126), size: 75, bottom: 50, right: 0, icon: Icons.search),
+                      const AnimatedCircle(index: 0, color: Color(0xFF192126), size: 100, top: 0, left: 186),
+                      const AnimatedCircle(index: 1, color: Color(0xFF192126), size: 75, top: 50, right: 0),
+                      const AnimatedCircle(index: 2, color: Color(0xFF192126), size: 115, bottom: 50, left: 0),
+                      const AnimatedCircle(index: 3, color: Color(0xFF192126), size: 75, bottom: 0, right: 75),
+                      const AnimatedCircle(index: 4, color: Color(0xFF192126), size: 75, bottom: 50, right: 0, icon: Icons.search),
                     ],
                   ),
                 ),
@@ -158,8 +158,8 @@ class DashedCirclePainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2;
 
-    final dashSize = 5;
-    final dashSpace = 5;
+    const dashSize = 5;
+    const dashSpace = 5;
     double startAngle = 0;
 
     while (startAngle < 360) {
@@ -189,7 +189,7 @@ class AnimatedCircle extends StatefulWidget {
   final IconData? icon;
 
   const AnimatedCircle({
-    Key? key,
+    super.key,
     required this.index,
     required this.color,
     required this.size,
@@ -198,7 +198,7 @@ class AnimatedCircle extends StatefulWidget {
     this.left,
     this.right,
     this.icon,
-  }) : super(key: key);
+  });
 
   @override
   _AnimatedCircleState createState() => _AnimatedCircleState();
@@ -247,24 +247,24 @@ class _AnimatedCircleState extends State<AnimatedCircle> with SingleTickerProvid
         child: GestureDetector(
           onTap: _toggleActive,
           child: AnimatedContainer(
-            duration: Duration(milliseconds: 200),
+            duration: const Duration(milliseconds: 200),
             width: widget.size,
             height: widget.size,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: _isActive ? Color(0xFFB9EAFD) : widget.color,
+              color: _isActive ? const Color(0xFFB9EAFD) : widget.color,
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withOpacity(0.2),
                   blurRadius: 5,
-                  offset: Offset(0, 3),
+                  offset: const Offset(0, 3),
                 ),
               ],
             ),
             child: widget.icon != null
                 ? Icon(
                     widget.icon,
-                    color: _isActive ? Color(0xFF192126) : Color(0xFFB9EAFD),
+                    color: _isActive ? const Color(0xFF192126) : const Color(0xFFB9EAFD),
                     size: widget.size * 0.4,
                   )
                 : null,
@@ -276,11 +276,13 @@ class _AnimatedCircleState extends State<AnimatedCircle> with SingleTickerProvid
 }
 
 class NavigationBar extends StatelessWidget {
+  const NavigationBar({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 20),
-      child: Row(
+      padding: const EdgeInsets.symmetric(vertical: 20),
+      child: const Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           NavButton(icon: Icons.home, label: 'Home', isActive: true),
@@ -299,28 +301,28 @@ class NavButton extends StatelessWidget {
   final bool isActive;
 
   const NavButton({
-    Key? key,
+    super.key,
     required this.icon,
     required this.label,
     this.isActive = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
-        color: isActive ? Color(0xFFB9EAFD) : Colors.transparent,
+        color: isActive ? const Color(0xFFB9EAFD) : Colors.transparent,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
         children: [
-          Icon(icon, color: isActive ? Color(0xFF192126) : Colors.white),
-          if (isActive) SizedBox(width: 4),
+          Icon(icon, color: isActive ? const Color(0xFF192126) : Colors.white),
+          if (isActive) const SizedBox(width: 4),
           if (isActive)
             Text(
               label,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Color(0xFF192126),
                 fontWeight: FontWeight.w500,
               ),
