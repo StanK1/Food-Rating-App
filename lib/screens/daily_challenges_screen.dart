@@ -1,7 +1,34 @@
 import 'package:flutter/material.dart';
 
-class DailyChallengesScreen extends StatelessWidget {
+class DailyChallengesScreen extends StatefulWidget {
   const DailyChallengesScreen({super.key});
+
+  @override
+  State<DailyChallengesScreen> createState() => _DailyChallengesScreenState();
+}
+
+class _DailyChallengesScreenState extends State<DailyChallengesScreen>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _scaleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 300),
+      vsync: this,
+    );
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 1.1).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +41,7 @@ class DailyChallengesScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildNavigation(),
+                _buildNavigation(context),
                 const SizedBox(height: 28),
                 _buildHeaderImage(),
                 const SizedBox(height: 18),
@@ -33,14 +60,17 @@ class DailyChallengesScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildNavigation() {
-    return const Padding(
-      padding: EdgeInsets.only(top: 20),
+  Widget _buildNavigation(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 20),
       child: Row(
         children: [
-          Icon(Icons.arrow_back, color: Colors.white),
-          SizedBox(width: 16),
-          Text(
+          IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () => Navigator.pop(context),
+          ),
+          const SizedBox(width: 8),
+          const Text(
             'Daily Challenge',
             style: TextStyle(
               color: Colors.white,
@@ -82,7 +112,8 @@ class DailyChallengesScreen extends StatelessWidget {
                     Colors.transparent,
                   ],
                 ),
-                borderRadius: const BorderRadius.vertical(bottom: Radius.circular(23)),
+                borderRadius:
+                    const BorderRadius.vertical(bottom: Radius.circular(23)),
               ),
             ),
           ),
@@ -140,11 +171,16 @@ class DailyChallengesScreen extends StatelessWidget {
           children: [
             Text(
               title,
-              style: const TextStyle(color: Colors.white, fontSize: 10, fontFamily: 'Poppins'),
+              style: const TextStyle(
+                  color: Colors.white, fontSize: 10, fontFamily: 'Poppins'),
             ),
             Text(
               value,
-              style: const TextStyle(color: Color(0xFF44CBFF), fontSize: 12, fontWeight: FontWeight.w500, fontFamily: 'Poppins'),
+              style: const TextStyle(
+                  color: Color(0xFF44CBFF),
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                  fontFamily: 'Poppins'),
             ),
           ],
         ),
@@ -179,15 +215,15 @@ class DailyChallengesScreen extends StatelessWidget {
   }
 
   //Widget _buildTimeInfo() {
-    //return Text(
-      //'Next challenge in: 2h 30m',
-    //  style: TextStyle(
-    //    color: Colors.white,
-    //    fontSize: 16,
-    //    fontWeight: FontWeight.w500,
-    //    fontFamily: 'Poppins',
-    //  ),
-    //);
+  //return Text(
+  //'Next challenge in: 2h 30m',
+  //  style: TextStyle(
+  //    color: Colors.white,
+  //    fontSize: 16,
+  //    fontWeight: FontWeight.w500,
+  //    fontFamily: 'Poppins',
+  //  ),
+  //);
   //}
 
   Widget _buildTaskList() {
@@ -207,11 +243,19 @@ class DailyChallengesScreen extends StatelessWidget {
           children: [
             Text(
               'Tasks',
-              style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w700, fontFamily: 'Lato'),
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                  fontFamily: 'Lato'),
             ),
             Text(
               '1/4',
-              style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500, fontFamily: 'Lato'),
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  fontFamily: 'Lato'),
             ),
           ],
         ),
@@ -244,10 +288,8 @@ class DailyChallengesScreen extends StatelessWidget {
             //  color: const Color(0xFF192126),
             //  borderRadius: BorderRadius.circular(13),
             //),
-            child: Image.asset(
-              'assets/images/daily_screen_rocket_luncher.png',
-              fit: BoxFit.contain
-            ),
+            child: Image.asset('assets/images/daily_screen_rocket_luncher.png',
+                fit: BoxFit.contain),
           ),
           const SizedBox(width: 8),
           Expanded(
@@ -257,25 +299,39 @@ class DailyChallengesScreen extends StatelessWidget {
               children: [
                 Text(
                   task,
-                  style: const TextStyle(color: Color(0xFFC8C1BB), fontSize: 13.5, fontWeight: FontWeight.w600, fontFamily: 'Inter'),
+                  style: const TextStyle(
+                      color: Color(0xFFC8C1BB),
+                      fontSize: 13.5,
+                      fontWeight: FontWeight.w600,
+                      fontFamily: 'Inter'),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   '$points points',
-                  style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 13, fontFamily: 'Lato'),
+                  style: TextStyle(
+                      color: Colors.white.withOpacity(0.5),
+                      fontSize: 13,
+                      fontFamily: 'Lato'),
                 ),
               ],
             ),
           ),
-          Container(
-            width: 28,
-            height: 28,
-            margin: const EdgeInsets.only(right: 16),
-            decoration: const BoxDecoration(
-              color: Color(0xFF192126),
-              shape: BoxShape.circle,
+          InkWell(
+            onTap: () {
+              // Add your task action here
+              print('Starting task: $task');
+            },
+            child: Container(
+              width: 28,
+              height: 28,
+              margin: const EdgeInsets.only(right: 16),
+              decoration: const BoxDecoration(
+                color: Color(0xFF192126),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(Icons.play_arrow,
+                  color: Color(0xFF37B6E9), size: 18),
             ),
-            child: const Icon(Icons.play_arrow, color: Color(0xFF37B6E9), size: 18),
           ),
         ],
       ),
@@ -283,21 +339,35 @@ class DailyChallengesScreen extends StatelessWidget {
   }
 
   Widget _buildStartButton() {
-    return Container(
-      width: double.infinity,
-      height: 56,
-      decoration: BoxDecoration(
-        color: const Color(0xFFB9EAFD),
-        borderRadius: BorderRadius.circular(32),
-      ),
-      child: const Center(
-        child: Text(
-          'Let\'s Begin',
-          style: TextStyle(
-            color: Color(0xFF192126),
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            fontFamily: 'Poppins',
+    return GestureDetector(
+      onTapDown: (_) => _controller.forward(),
+      onTapUp: (_) {
+        _controller.reverse();
+        Future.delayed(const Duration(milliseconds: 300), () {
+          // Add your navigation here
+          print('Navigate to next screen');
+        });
+      },
+      onTapCancel: () => _controller.reverse(),
+      child: ScaleTransition(
+        scale: _scaleAnimation,
+        child: Container(
+          width: double.infinity,
+          height: 56,
+          decoration: BoxDecoration(
+            color: const Color(0xFFB9EAFD),
+            borderRadius: BorderRadius.circular(32),
+          ),
+          child: const Center(
+            child: Text(
+              'Let\'s Begin',
+              style: TextStyle(
+                color: Color(0xFF192126),
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                fontFamily: 'Poppins',
+              ),
+            ),
           ),
         ),
       ),
