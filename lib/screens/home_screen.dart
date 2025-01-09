@@ -31,7 +31,8 @@ class HomeScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ScanHistoryScreen()),
+                  MaterialPageRoute(
+                      builder: (context) => const ScanHistoryScreen()),
                 );
               },
               child: const Text('View Scanned Chocolates'),
@@ -41,10 +42,18 @@ class HomeScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const DailyChallengesScreen()),
+                  MaterialPageRoute(
+                      builder: (context) => const DailyChallengesScreen()),
                 );
               },
               child: const Text('Daily Challenges'),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/register');
+              },
+              child: const Text('Go to Register'),
             ),
           ],
         ),
@@ -53,8 +62,10 @@ class HomeScreen extends StatelessWidget {
         onPressed: () {
           Navigator.of(context).push(
             PageRouteBuilder(
-              pageBuilder: (context, animation, secondaryAnimation) => const HomeMenuScreen(),
-              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  const HomeMenuScreen(),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) {
                 const begin = 0.0;
                 const end = 1.0;
                 var tween = Tween(begin: begin, end: end);
