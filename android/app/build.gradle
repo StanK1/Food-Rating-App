@@ -5,55 +5,68 @@ plugins {
     id "dev.flutter.flutter-gradle-plugin"
 }
 
-ext.kotlin_version = "1.6.21" // Define the Kotlin version here
+import java.io.FileNotFoundException
+
+ext.kotlin_version = "1.8.22"
 
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file("local.properties")
 if (localPropertiesFile.exists()) {
-    localPropertiesFile.withReader("UTF-8") { reader ->
+    localPropertiesFile.withReader('UTF-8') { reader ->
         localProperties.load(reader)
     }
 }
 
-def flutterVersionCode = localProperties.getProperty("flutter.versionCode")
-if (flutterVersionCode == null) {
-    flutterVersionCode = "1"
+def flutterRoot = localProperties.getProperty('flutter.sdk')
+if (flutterRoot == null) {
+    throw new FileNotFoundException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
 }
 
-def flutterVersionName = localProperties.getProperty("flutter.versionName")
-if (flutterVersionName == null) {
-    flutterVersionName = "1.0"
+// Add repositories at the root project level
+rootProject.allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven {
+            url "$flutterRoot/bin/cache/artifacts/engine/android-arm/maven"
+        }
+        maven {
+            url "$flutterRoot/bin/cache/artifacts/engine/android-arm64/maven"
+        }
+        maven {
+            url "$flutterRoot/bin/cache/artifacts/engine/android-x64/maven"
+        }
+        // Add the Flutter repo
+        maven {
+            url "$flutterRoot/bin/cache/downloads/artifacts/gradle_repo"
+        }
+    }
 }
 
 android {
-    namespace "com.example.yourapp" // Replace with your app's package name
-    compileSdk 34 // Android 14+
-
-    defaultConfig {
-        applicationId "com.example.yourapp" // Replace with your app's ID
-        minSdk 21 // Minimum supported Android version
-        targetSdk 34 // Target Android 14+
-        versionCode 1
-        versionName "1.0"
-
-        // Ensure Java compatibility
-        multiDexEnabled true
-    }
+    namespace = "com.example.choconavt"
+    compileSdk = flutter.compileSdkVersion
+    ndkVersion = flutter.ndkVersion
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = '17'
     }
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.choconavtbarcodescanner"
+        applicationId = "com.example.choconavt"
         // You can update the following values to match your application needs.
-        // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdk = flutter.minSdkVersion
+        // For more information, see: https://flutter.dev/to/review-gradle-config.
+        minSdk = Math.max(flutter.minSdkVersion, 21)
         targetSdk = flutter.targetSdkVersion
-        versionCode = flutterVersionCode.toInteger()
-        versionName = flutterVersionName
+        versionCode = flutter.versionCode
+        versionName = flutter.versionName
+        multiDexEnabled = true
     }
 
     buildTypes {
@@ -61,11 +74,37 @@ android {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.debug
+            // Disable minification for now to avoid R8 errors
+            minifyEnabled = false
+            shrinkResources = false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            minifyEnabled = false
+            shrinkResources = false
+        }
+    }
+
+    testOptions {
+        unitTests.all {
+            useJUnitPlatform()
         }
     }
 }
 
-dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version" // Use the defined Kotlin version
-    // ... other dependencies ...
+flutter {
+    source = "../.."
 }
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'androidx.core:core-ktx:1.10.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.activity:activity-ktx:1.7.0'
+    implementation 'androidx.fragment:fragment-ktx:1.5.7'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.1'
+    implementation 'androidx.multidex:multidex:2.0.1'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+}
+

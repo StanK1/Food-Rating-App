@@ -1,0 +1,1 @@
+C:\Users\stani\Desktop\tests\Food-Rating-App\android\app\src\main\kotlin\com\example\choconavtbarcodescanner\MainActivity.kt

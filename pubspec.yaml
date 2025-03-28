@@ -30,11 +30,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_barcode_scanner: ^2.0.0
+  # flutter_barcode_scanner: ^2.0.0
+  mobile_scanner: ^3.5.7
   flutter_svg: ^2.0.17
   http: ^1.2.2
   provider: ^6.0.5
   shared_preferences: ^2.0.9
+  font_awesome_flutter: ^10.6.0
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -95,4 +97,11 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+ # fonts:
+ #   - family: Ethnocentric
+ #     fonts:
+ #       - asset: assets/fonts/ethnocentric.ttf
+ #         weight: 400
+
 
