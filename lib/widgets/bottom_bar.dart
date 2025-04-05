@@ -1,135 +1,272 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../screens/scan_screen.dart';
-import '../screens/signup_screen.dart';
+import '../screens/home_screen.dart';
 import '../screens/login_screen.dart';
+import '../screens/scan_history_screen.dart';
 import 'dart:ui';
 
-class BottomBar extends StatelessWidget {
+class BottomBar extends StatefulWidget {
   const BottomBar({super.key});
 
   @override
+  State<BottomBar> createState() => _BottomBarState();
+}
+
+class _BottomBarState extends State<BottomBar>
+    with SingleTickerProviderStateMixin {
+  int _selectedIndex = 0;
+  late AnimationController _animationController;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 400),
+    );
+    _animationController.forward();
+
+    // Enable edge-to-edge mode to allow content to draw behind system navigation bar
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+
+    // Make system navigation bar transparent
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      systemNavigationBarColor: Colors.transparent,
+      systemNavigationBarContrastEnforced: false,
+    ));
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 82,
-      decoration: BoxDecoration(
-          // color: Colors.transparent,
-          // borderRadius: BorderRadius.circular(16),
-          ),
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          // Background shape for the bar
-          Positioned.fill(
-            child: Align(
-              alignment: Alignment.center,
-              child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 20),
-                height: 55,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      Colors.white.withAlpha(20),
-                      Colors.white.withAlpha(5),
-                    ],
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: const SystemUiOverlayStyle(
+        systemNavigationBarColor: Colors.transparent,
+        systemNavigationBarDividerColor: Colors.transparent,
+        systemNavigationBarContrastEnforced: false,
+      ),
+      child: Container(
+        height: 80,
+        margin: const EdgeInsets.only(bottom: 10),
+        child: Stack(
+          clipBehavior: Clip.none,
+          alignment: Alignment.bottomCenter,
+          children: [
+            // Main background container with blur
+            Positioned(
+              bottom: 0,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(30),
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.92,
+                    height: 62,
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(30),
+                      border: Border.all(
+                        color: Colors.white.withOpacity(0.15),
+                        width: 0.8,
+                      ),
+                    ),
                   ),
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(
-                    color: Colors.white.withAlpha(30),
-                    width: 0.5,
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Color(0xFFF09EFF).withAlpha(5),
-                      blurRadius: 15,
-                      spreadRadius: 1,
+                ),
+              ),
+            ),
+
+            // Navigation items
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width * 0.92,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _buildNavItem(
+                      icon: Icons.home_outlined,
+                      filledIcon: Icons.home_rounded,
+                      label: 'Home',
+                      index: 0,
+                      onTap: () {
+                        setState(() => _selectedIndex = 0);
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const HomeScreen()),
+                        );
+                      },
+                    ),
+                    _buildNavItem(
+                      icon: Icons.rocket_launch_outlined,
+                      filledIcon: Icons.rocket_launch_rounded,
+                      label: 'Explore',
+                      index: 1,
+                      onTap: () => setState(() => _selectedIndex = 1),
+                    ),
+                    // Center space for scan button
+                    SizedBox(width: 60),
+                    _buildNavItem(
+                      icon: Icons.history_outlined,
+                      filledIcon: Icons.history_rounded,
+                      label: 'History',
+                      index: 3,
+                      onTap: () {
+                        setState(() => _selectedIndex = 3);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const ScanHistoryScreen()),
+                        );
+                      },
+                    ),
+                    _buildNavItem(
+                      icon: Icons.person_outline_rounded,
+                      filledIcon: Icons.person_rounded,
+                      label: 'Profile',
+                      index: 4,
+                      onTap: () {
+                        setState(() => _selectedIndex = 4);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Login()),
+                        );
+                      },
                     ),
                   ],
                 ),
               ),
             ),
-          ),
 
-          // Center scan button
-          Positioned(
-            top: -25,
-            left: MediaQuery.of(context).size.width / 2 - 33,
-            child: GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const ScanScreen()),
-                );
-              },
-              child: Container(
-                width: 66,
-                height: 66,
-                decoration: BoxDecoration(
-                  gradient: RadialGradient(
-                    colors: [
-                      Color(0xFFF09EFF), // Light pink
-                      Color(0xFFAB2AC2), // Dark purple
-                    ],
-                    center: Alignment(0, 0),
-                    radius: 0.8,
-                  ),
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Color(0x7FAB2AC2), // Purple shadow
-                      blurRadius: 25,
-                      offset: Offset(0, 8),
-                      spreadRadius: 0,
+            // Center scan button
+            Positioned(
+              top: 0,
+              child: AnimatedBuilder(
+                animation: _animationController,
+                builder: (context, child) {
+                  final scale = 0.95 + (0.05 * _animationController.value);
+                  return Transform.scale(
+                    scale: scale,
+                    child: Container(
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            Color(0xFFCE5DEB),
+                            Color(0xFFAB2AC2),
+                          ],
+                        ),
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0xFFAB2AC2).withOpacity(0.3),
+                            blurRadius: 12,
+                            offset: const Offset(0, 4),
+                            spreadRadius: 0,
+                          ),
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.2),
+                            blurRadius: 6,
+                            offset: const Offset(0, 2),
+                            spreadRadius: 0,
+                          ),
+                        ],
+                      ),
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: () {
+                            setState(() => _selectedIndex = 2);
+                            _animationController.reset();
+                            _animationController.forward();
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const ScanScreen()),
+                            );
+                          },
+                          customBorder: const CircleBorder(),
+                          highlightColor: Colors.white.withOpacity(0.2),
+                          splashColor: Colors.white.withOpacity(0.2),
+                          child: const Center(
+                            child: Icon(
+                              Icons.qr_code_scanner_rounded,
+                              color: Colors.white,
+                              size: 28,
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
-                  ],
-                ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNavItem({
+    required IconData icon,
+    required IconData filledIcon,
+    required String label,
+    required int index,
+    required VoidCallback onTap,
+  }) {
+    final bool isSelected = index == _selectedIndex;
+
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(20),
+        highlightColor: Colors.white.withOpacity(0.05),
+        splashColor: Colors.white.withOpacity(0.05),
+        child: Container(
+          width: 65,
+          padding: const EdgeInsets.only(top: 6, bottom: 10),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
                 child: Icon(
-                  Icons.qr_code_scanner,
-                  color: Colors.white,
-                  size: 32,
+                  isSelected ? filledIcon : icon,
+                  size: isSelected ? 24 : 22,
+                  color: isSelected
+                      ? const Color(0xFFF09EFF)
+                      : Colors.white.withOpacity(0.7),
                 ),
               ),
-            ),
+              const SizedBox(height: 4),
+              Text(
+                label,
+                style: TextStyle(
+                  fontSize: 11,
+                  letterSpacing: 0.3,
+                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+                  color: isSelected
+                      ? const Color(0xFFF09EFF)
+                      : Colors.white.withOpacity(0.7),
+                ),
+              ),
+            ],
           ),
-
-          // Navigation Items
-          Positioned.fill(
-            top: 0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                IconButton(
-                  icon: Icon(Icons.home, size: 26),
-                  onPressed: () {},
-                  color: Color(0xFFF09EFF), // Active color
-                ),
-                IconButton(
-                  icon: Icon(Icons.rocket_launch, size: 24),
-                  onPressed: () {},
-                  color: Colors.white.withAlpha(150), // Inactive color
-                ),
-                SizedBox(width: 80),
-                IconButton(
-                  icon: Icon(Icons.book, size: 24),
-                  onPressed: () {},
-                  color: Colors.white.withAlpha(150),
-                ),
-                IconButton(
-                  icon: Icon(Icons.person, size: 24),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const Login()),
-                    );
-                  },
-                  color: Colors.white.withAlpha(150),
-                ),
-              ],
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
